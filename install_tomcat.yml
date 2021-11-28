@@ -1,8 +1,8 @@
 ---
 - hosts: 192.168.2.30
   become: true
-  become_user: jenkins
+  #become_user: jenkins
   vars: 
-   ansible_become_pass: password
+   ansible_become_pass: "password"
   roles:
     - tomcat
