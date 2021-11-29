@@ -3,10 +3,10 @@
 
 ######## backup and clean up ############
 
-- name: check if webapps folder exits
+- name: check if webapp.war exits
   stat:
-    path: /usr/share/tomcat/webapps
-  register: folder
+    path: /usr/share/tomcat/webapps/webapp.war
+  register: webapp_war
 
 - name: mkdir if backup not exits
   file:
@@ -16,17 +16,17 @@
 
 - name: create backup
   copy:
-    src: /usr/share/tomcat/webapps
+    src: /usr/share/tomcat/webapps/webapp.war
     dest: /opt/backup
     remote_src: yes
     backup: yes
-  when: folder.stat.exists
+  when: webapp_war.stat.exists
 
 - name: delete webapps if it exits
   file:
     path: /usr/share/tomcat/webapps
     state: absent
-  when: folder.stat.exists
+  when: webapp_war.stat.exists
 
 
 ##########   delop webapp ###############

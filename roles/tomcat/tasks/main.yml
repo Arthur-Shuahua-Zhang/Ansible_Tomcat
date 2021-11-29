@@ -4,20 +4,20 @@
  - name: install JDK
    yum:
      name: java
-     state: installed
+     state: latest
 
  - name: install tomcat
    yum: 
      name: tomcat
-     state: installed
+     state: latest
 
- - name: install additional package
-   yum:
-     name:
-       - tomcat-webapps
-       - tomcat-admin-webapps
-       - tomcat-docs-webapp
-     state: installed
+ #- name: install additional package
+ #  yum:
+ #    name:
+ #      - tomcat-webapps
+ #      - tomcat-admin-webapps
+ #     - tomcat-docs-webapp
+ #    state: installed
 
  - name: copy tomcat-users.xml
    copy:
