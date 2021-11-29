@@ -4,12 +4,12 @@
  - name: install JDK
    yum:
      name: java
-     state: latest
+     state: installed
 
  - name: install tomcat
    yum: 
      name: tomcat
-     state: latest
+     state: installed
 
  - name: install additional package
    yum:
