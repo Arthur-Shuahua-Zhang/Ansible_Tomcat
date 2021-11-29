@@ -8,10 +8,18 @@
     path: /usr/share/tomcat/webapps
   register: folder
 
+- name: mkdir if backup not exits
+  file:
+    path: /opt/backup
+    state: directory
+    mode: '0755'
+
 - name: create backup
   copy:
     src: /usr/share/tomcat/webapps
     dest: /opt/backup
+    remote_src: yes
+    backup: yes
   when: folder.stat.exists
 
 - name: delete webapps if it exits
@@ -33,7 +41,7 @@
     name: jenkins
     groups: tomcat
     append: yes
-  when: write_check.stat.writeable == false
+  #when: write_check.stat.writeable == false
 
 - name: copy war file to the tomcat server
   copy:
