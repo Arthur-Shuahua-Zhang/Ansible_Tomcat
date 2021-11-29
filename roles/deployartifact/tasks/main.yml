@@ -1,2 +1,57 @@
 ---
 # tasks file for deployartifact
+
+######## backup and clean up ############
+
+- name: check if webapps folder exits
+  stat:
+    path: /usr/share/tomcat/webapps
+  register: folder
+
+- name: create backup
+  copy:
+    src: /usr/share/tomcat/webapps
+    dest: /opt/backup
+  when: folder.stat.exists
+
+- name: delete webapps if it exits
+  file:
+    path: /usr/share/tomcat/webapps
+    state: absent
+  when: folder.stat.exists
+
+
+##########   delop webapp ###############
+
+- name: check if jenkins have authorization to write
+  stat:
+    path: /usr/share/tomcat/webapps
+  register: write_check
+
+- name: add user jenkins to tomcat group if not in the group
+  user:
+    name: jenkins
+    groups: tomcat
+    append: yes
+  when: write_check.stat.writeable == false
+
+- name: copy war file to the tomcat server
+  copy:
+    src: /var/lib/jenkins/workspace/Job1_Build_Maven/webapp/target/webapp.war
+    dest: /usr/share/tomcat/webapps/
+
+##########   restart tomcat ##################
+
+- name: restart tomcat server
+  service:
+    name: tomcat
+    state: restarted
+
+...
+
+
+
+
+
+
+
